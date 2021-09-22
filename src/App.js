@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
+import User from "./components/User/User";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [users, setUsers] = useState([]);
+    useEffect(() => {
+        fetch("./userData.json")
+            .then((res) => res.json())
+            .then((data) => setUsers(data));
+    }, []);
+
+    /* const ageReducer = (previous, current) => previous + current.age;
+    const totalAge = users.reduce(ageReducer, 0);
+    console.log(totalAge); */
+
+    return (
+        <div className="App">
+            <h1>User Loaded: {users.length}</h1>
+            {users.map((user) => (
+                <User key={user._id} user={user}></User>
+            ))}
+        </div>
+    );
 }
 
 export default App;
